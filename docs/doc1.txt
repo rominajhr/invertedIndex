@@ -1,0 +1,5 @@
+Computer systems are built from hardware and software components.
+The operating system manages memory, process scheduling, and storage.
+Modern systems use efficient algorithms to manage data and resources.
+Memory buffers and cache layers improve performance in large systems.
+Searching and indexing data efficiently is a core problem in computer science.
