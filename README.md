@@ -1,218 +1,193 @@
-# Inverted Index with B-Tree (Python)
+# 📘 Information Retrieval with Inverted Index and B-Tree (Python)
 
-This project implements a **simple Information Retrieval system** in Python. It builds an **Inverted Index** over a collection of text documents and stores the dictionary (term → posting list) inside a **B-Tree** data structure.
+This repository contains an educational Information Retrieval (IR) system written in Python.  
+It builds an **Inverted Index** over a set of text documents and stores the dictionary (term → posting list) using a custom **B-Tree** data structure.
 
-The project is educational and suitable for:
-
-* Information Retrieval courses
-* Data Structures (B-Tree)
-* Search & Indexing demonstrations
+This project is suitable for learning IR fundamentals, B-Tree data structures, and basic search techniques.
 
 ---
 
-## ✨ Features
+## 🚀 Features
 
-* Text normalization and tokenization
-* In-memory inverted index (term → document IDs)
-* Custom implementation of a **B-Tree**
-* Efficient term lookup using the B-Tree
-* ASCII visualization of the B-Tree structure
-* Saving full output (documents, terms, postings, tree) to a file
+- **Text normalization and tokenization**  
+- **Inverted index** (term → set of document IDs)  
+- **Custom B-Tree implementation** for storing the index  
+- **Efficient term lookup** via B-Tree search  
+- **ASCII visualization** of the B-Tree structure  
+- **Full output saving** (documents, terms, postings, tree) to a file  
 
 ---
 
 ## 📁 Project Structure
 
-```
-project/
+information-retrieval/
 │
-├── main.py            # Main source code
-├── README.md          # This file
-└── docs/              # Input documents
-    ├── doc1.txt
-    ├── doc2.txt
-    └── doc3.txt
-```
+├── docs/ # Document text files (input)
+│ ├── doc1.txt
+│ ├── doc2.txt
+│ └── doc3.txt
+│
+├── invertedIndex.py # Core inverted index + B-Tree logic
+├── IRQuery.py # Query interface for searching terms
+├── README.md # This file
+└── full_output.txt # (Generated) full output dump
 
-Each `.txt` file inside the `docs` directory is treated as **one document**.
+yaml
+Copy code
+
+Each `.txt` file in the `docs/` directory is treated as a document.  
 The filename (without extension) is used as the document ID.
 
 ---
 
 ## 🧠 Core Components
 
-### 1. SimpleTokenizer
+### 1. **SimpleTokenizer**
+- Converts text to lowercase  
+- Removes punctuation  
+- Splits text based on whitespace  
 
-* Converts text to lowercase
-* Removes punctuation
-* Splits text into tokens based on whitespace
-
-```python
-SimpleTokenizer(keep_punctuation=False)
-```
+The tokenizer ensures consistent normalization across all documents.
 
 ---
 
-### 2. B-Tree Implementation
+### 2. **B-Tree Implementation**
+A custom B-Tree is used to store the inverted dictionary efficiently.  
+It supports:
 
-A custom B-Tree with configurable minimum degree `t`.
+- `insert(key, value)`
+- `search(key)`
+- `traverse()`
+- `ascii_print()`  
 
-* Supports insertion and search
-* Stores:
+The B-Tree stores:
+- **term** as key  
+- **posting list** (list of document IDs) as value
 
-  * `key` → term (string)
-  * `value` → posting list (list of document IDs)
-
-Key methods:
-
-* `insert(key, value)`
-* `search(key)`
-* `traverse()`
-* `ascii_print()`
+This enables faster lookup than a simple list or dictionary for large term sets.
 
 ---
 
-### 3. InvertedIndex
+### 3. **InvertedIndex**
+This class builds and manages the inverted index:
 
-Builds and manages the inverted index.
-
-Responsibilities:
-
-* Tokenizing documents
-* Building term → document mappings
-* Inserting terms into the B-Tree
-* Searching for terms
-
-Key methods:
-
-```python
-add_document(doc_id, text)
-finalize()
-search(term)
-save(path)
-load(path)
-```
+- Tokenizes documents  
+- Builds term → document mapping  
+- Inserts all terms into the B-Tree  
+- Performs search queries  
+- Saves/loads index to/from JSON  
 
 ---
 
-## 🚀 How to Run
+## 📌 How to Run
 
-### 1. Prepare Input Documents
+### 💾 Prepare Input Documents
 
-Create a directory named `docs` and add text files:
+Create a folder named `docs` at the root of the project.  
+Add `.txt` files containing your text documents, for example:
 
-```
 docs/
 ├── doc1.txt
 ├── doc2.txt
 └── doc3.txt
-```
 
-Example content:
+css
+Copy code
 
-```
-Information retrieval systems rely on indexing and search.
-```
+Example contents of a doc:
+
+Information retrieval systems rely on indexing and efficient search.
+
+yaml
+Copy code
 
 ---
 
-### 2. Run the Program
+### ▶ Run the Program
 
 ```bash
-python main.py
-```
+python IRQuery.py
+🖨 Output
+Running the program will generate:
 
----
+✅ Terminal Output:
+Full document content
 
-## 📤 Output
+All extracted terms (sorted)
 
-The program produces:
+Complete inverted index (term → postings)
 
-1. Printed output in terminal:
+B-Tree traversal output
 
-   * All documents
-   * All extracted terms (sorted)
-   * Full inverted index
-   * B-Tree traversal
-   * ASCII B-Tree visualization
+ASCII visualization of the B-Tree
 
-2. A file named:
-
-```
+📄 File Output:
+Copy code
 full_output.txt
-```
+Contains:
 
-This file contains:
+Full documents
 
-* Full document contents
-* All terms
-* Posting lists
-* ASCII representation of the B-Tree
+All terms
 
----
+Posting lists
 
-## 🌳 Example ASCII B-Tree Output
+ASCII B-Tree structure
 
-```
+🧩 Example ASCII B-Tree Output
+css
+Copy code
 ['algorithm', 'data']
-  ['buffer', 'compute']
-  ['index', 'memory', 'search']
-```
+    ['buffer', 'compute']
+    ['index', 'memory', 'search']
+(The exact structure depends on input data and B-Tree configuration.)
 
-(This structure depends on input data and B-Tree degree.)
+⚙️ Configuration
+You can adjust the B-Tree degree (branching factor):
 
----
-
-## ⚙️ Configuration
-
-You can adjust the B-Tree minimum degree:
-
-```python
+python
+Copy code
 INVERTED_INDEX, DOCUMENTS = demo_build_and_show_from_files(
     input_dir="docs",
     btree_t=3
 )
-```
+Larger t → wider, shallower tree
 
-* Larger `t` → wider, shallower tree
-* Smaller `t` → narrower, deeper tree
+Smaller t → narrower, deeper tree
 
----
+📝 Notes
+This implementation focuses on clarity and learning rather than performance.
+It does NOT include:
 
-## 📚 Educational Notes
+Stemming or lemmatization
 
-* This implementation does **not** include:
+Stop-word removal
 
-  * Stemming
-  * Stop-word removal
-  * Positional indexes
-  * TF-IDF weighting
+Positional indexes
 
-These can be added as future extensions.
+TF-IDF weighting or ranking
 
----
+Boolean query operators
 
-## 🛠 Possible Extensions
+Those can be added as future enhancements.
 
-* Positional inverted index
-* TF / DF / TF-IDF scoring
-* Query processing (AND / OR)
-* Disk-based B-Tree
-* Support for Persian text
+🚀 Possible Extensions
+Add TF-IDF weighting for ranked retrieval
 
----
+Enable Boolean queries (AND/OR/NOT)
 
-## 👩‍💻 Author
+Add positional inverted index for phrase search
 
-Developed as an educational project for learning:
+Support Persian/Unicode text
 
-* Inverted Indexes
-* B-Trees
-* Information Retrieval fundamentals
+Export index to disk-based B-Tree
 
----
+🎓 Author
+An educational implementation for learning:
 
-## ❤️ Final Note
+Inverted Index structures
 
-This project prioritizes **clarity and learning** over performance.
-Perfect for understanding how real search engines build indexes internally.
+B-Tree data structure
+
+Fundamentals of Information Retrieval
+
